@@ -3,3 +3,11 @@
 class EndOfFileError(Exception):
     def __str__(self):
         return repr("End of File")
+
+class CompilerSyntaxError(Exception):
+
+    def __init__(self, line):
+        self.line = line
+
+    def __str__(self):
+        return ("Syntax error at line " + str(self.line))

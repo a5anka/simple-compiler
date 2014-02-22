@@ -3,7 +3,7 @@
 import sys
 
 from lexer import Lexer
-from errors import EndOfFileError
+from errors import EndOfFileError, CompilerSyntaxError
 
 def process_arguments():
     if len(sys.argv) != 2:
@@ -21,16 +21,16 @@ def main():
 
         try:
             lex = Lexer(filebuffer)
-            lex.scan()
-            lex.scan()
-            lex.scan()
-            lex.scan()
-            lex.scan()
-            lex.scan()
-            lex.scan()
+            print (lex.scan()
+            print lex.scan()
+            print lex.scan()
+            print lex.scan()
+            print lex.scan()
 
         except EndOfFileError:
             pass
+        except CompilerSyntaxError as e:
+            print e
 
 if __name__ == '__main__':
     main()
