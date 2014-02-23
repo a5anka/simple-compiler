@@ -26,7 +26,8 @@ def main():
             parser.P()
 
         except EndOfFileError:
-            pass
+            print "Syntax error at line " + str(lex.line)
+
         except CompilerSyntaxError as e:
             print e
 

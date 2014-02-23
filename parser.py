@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 
 from tag import Tag
-from errors import CompilerSyntaxError
+from errors import CompilerSyntaxError, EndOfFileError
 
 class Parser (object):
     def __init__(self, lexer):
@@ -41,14 +41,19 @@ class Parser (object):
     def N1(self):
         try:
             self.match(Tag.COMMA)
-            self.match(Tag.ID)
-            self.N1()
         except CompilerSyntaxError:
-            pass
+            return
+
+        self.match(Tag.ID)
+        self.N1()
 
     def L(self):
         self.S()
-        self.match(Tag.END)
+        try:
+            self.match(Tag.END)
+        except EndOfFileError:
+            pass
+
         try:
             self.L()
         except CompilerSyntaxError:
@@ -57,10 +62,12 @@ class Parser (object):
     def S(self):
         try:
             self.match(Tag.ID)
-            self.match(Tag.ASSIGN)
-            self.E()
         except CompilerSyntaxError:
             self.E()
+            return
+
+        self.match(Tag.ASSIGN)
+        self.E()
 
     def E(self):
         self.T()
@@ -69,10 +76,11 @@ class Parser (object):
     def E1(self):
         try:
             self.match(Tag.ADD)
-            self.T()
-            self.E1()
         except CompilerSyntaxError:
-            pass
+            return
+
+        self.T()
+        self.E1()
 
     def T(self):
         self.F()
@@ -81,18 +89,21 @@ class Parser (object):
     def T1(self):
         try:
             self.match(Tag.MUL)
-            self.F()
-            self.T1()
         except CompilerSyntaxError:
-            pass
+            return
+
+        self.F()
+        self.T1()
 
     def F(self):
         try:
             self.match(Tag.OPEN_PARAN)
-            self.E()
-            self.match(Tag.CLOSE_PARAN)
         except CompilerSyntaxError:
             try:
                 self.match(Tag.NUM)
-            except:
+            except CompilerSyntaxError:
                 self.match(Tag.ID)
+            return
+
+        self.E()
+        self.match(Tag.CLOSE_PARAN)
