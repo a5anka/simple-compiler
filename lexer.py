@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-from errors import EndOfFileError, CompilerSyntaxError
+from errors import EndOfFileError, CompilerSyntaxError, CompilerLexError
 from token import Word, Num, Type, ReservedWords
 from tag import Tag
 
@@ -121,4 +121,4 @@ class Lexer (object):
 
             return self.get_token_for(b)
 
-        raise CompilerSyntaxError(self.line)
+        raise CompilerLexError(self.line)

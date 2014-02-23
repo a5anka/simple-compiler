@@ -4,7 +4,7 @@ import sys
 
 from lexer import Lexer
 from errors import EndOfFileError, CompilerSyntaxError, CompilerLexError
-from parser import Parser
+from postfix_parser import PostfixParser
 
 def process_arguments():
     if len(sys.argv) != 2:
@@ -22,7 +22,7 @@ def main():
 
         try:
             lex = Lexer(filebuffer)
-            parser = Parser(lex)
+            parser = PostfixParser(lex)
             parser.P()
 
         except EndOfFileError:
