@@ -4,6 +4,7 @@ import sys
 
 from lexer import Lexer
 from errors import EndOfFileError, CompilerSyntaxError
+from parser import Parser
 
 def process_arguments():
     if len(sys.argv) != 2:
@@ -21,11 +22,8 @@ def main():
 
         try:
             lex = Lexer(filebuffer)
-            print (lex.scan()
-            print lex.scan()
-            print lex.scan()
-            print lex.scan()
-            print lex.scan()
+            parser = Parser(lex)
+            parser.P()
 
         except EndOfFileError:
             pass
