@@ -2,9 +2,9 @@
 
 import sys
 
-from lexer import Lexer
+from lexer.lexer import Lexer
 from errors import EndOfFileError, CompilerSyntaxError, CompilerLexError
-from parser import Parser
+from parser.parser import Parser
 
 def process_arguments():
     if len(sys.argv) != 2:

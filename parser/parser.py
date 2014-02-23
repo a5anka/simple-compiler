@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-from tag import Tag
+from lexer.tag import Tag
 from errors import CompilerSyntaxError, EndOfFileError
 
 class Parser (object):
