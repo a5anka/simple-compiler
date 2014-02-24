@@ -6,6 +6,7 @@ from code_generation.node import Leaf, Node
 
 class CodeParser (object):
     def __init__(self, lexer):
+        self.node_list = []
         self.lex = lexer
         self.move()
 
@@ -72,7 +73,7 @@ class CodeParser (object):
 
         self.match(Tag.ASSIGN)
         e_node = self.E()
-        return Node('=', Leaf(token), e_node)
+        return self.get_node('=', Leaf(token), e_node)
 
     def E(self):
         t_node = self.T()
@@ -86,7 +87,7 @@ class CodeParser (object):
             return inh
 
         t_node = self.T()
-        node = self.E1(Node('+', inh, t_node))
+        node = self.E1(self.get_node('+', inh, t_node))
         return node
 
     def T(self):
@@ -101,7 +102,7 @@ class CodeParser (object):
             return inh
 
         f_node = self.F()
-        node = self.T1(Node('*', inh, f_node))
+        node = self.T1(self.get_node('*', inh, f_node))
         return node
 
     def F(self):
@@ -120,4 +121,27 @@ class CodeParser (object):
 
         node = self.E()
         self.match(Tag.CLOSE_PARAN)
+        return node
+
+    def get_leaf(self, token):
+        for i in self.node_list:
+            if type(i) == Leaf and str(i.token) == str(token):
+                return i
+
+        node = Leaf(token)
+        self.node_list.append(node)
+        return node
+
+    def get_node(self, op, l, r):
+        for i in self.node_list:
+            if (type(i) == Node and
+                i.operator == op and
+                type(i.child1) == type(l) and
+                i.child1 == l and
+                type(i.child2) == type(r) and
+                i.child2 == r):
+                return i
+
+        node = Node(op, l, r)
+        self.node_list.append(node)
         return node

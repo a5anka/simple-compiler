@@ -7,27 +7,34 @@ class Node (object):
         self.operator = operator
         self.child1 = child1
         self.child2 = child2
+        self.generated = False
+        self.temp_var = "ERROR"
 
     def generate(self):
         child1_temp = self.child1.generate()
         child2_temp = self.child2.generate()
 
+        if self.operator == '=':
+            print child1_temp, '=', child2_temp
+
+        if self.generated:
+            return self.temp_var
+
+        self.generated = True
+
         if self.operator == '+':
             Node.temp_count += 1
-            temp_var = "temp_" + str(Node.temp_count)
+            self.temp_var = "temp_" + str(Node.temp_count)
 
-            print temp_var , "=", child1_temp, '+', child2_temp
-            return temp_var
+            print self.temp_var , "=", child1_temp, '+', child2_temp
+            return self.temp_var
 
         elif self.operator == '*':
             Node.temp_count += 1
-            temp_var = "temp_" + str(Node.temp_count)
+            self.temp_var = "temp_" + str(Node.temp_count)
 
-            print temp_var , "=", child1_temp, '*', child2_temp
-            return temp_var
-
-        elif self.operator == '=':
-            print child1_temp, '=', child2_temp
+            print self.temp_var , "=", child1_temp, '*', child2_temp
+            return self.temp_var
 
 
 class Leaf (object):
@@ -36,3 +43,6 @@ class Leaf (object):
 
     def generate(self):
         return str(self.token)
+
+    def __eq__(self, other):
+        return str(self.token) == str(other.token)
