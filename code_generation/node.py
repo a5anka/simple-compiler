@@ -1,5 +1,8 @@
 #!/usr/bin/env python2
 
+from lexer.token import Type, ReservedWords
+from errors import TypeNarrowError
+
 class Node (object):
     temp_count = 0
 
@@ -9,13 +12,24 @@ class Node (object):
         self.child2 = child2
         self.generated = False
         self.temp_var = "ERROR"
+        self.data_type = Type.max(child1.data_type, child2.data_type)
 
     def generate(self):
         child1_temp = self.child1.generate()
         child2_temp = self.child2.generate()
 
         if self.operator == '=':
-            print child1_temp, '=', child2_temp
+            if (self.child1.data_type == self.child2.data_type):
+                print child1_temp, '=', child2_temp
+            elif (self.child1.data_type == ReservedWords.Float and
+                  self.child2.data_type == ReservedWords.Int):
+                Node.temp_count += 1
+                temp_cast = "temp_" + str(Node.temp_count)
+
+                print temp_cast, "= (float)", child2_temp
+                print child1_temp, '=', temp_cast
+            else:
+                raise TypeNarrowError()
 
         if self.generated:
             return self.temp_var
@@ -40,6 +54,7 @@ class Node (object):
 class Leaf (object):
     def __init__(self, token):
         self.token = token
+        self.data_type = None
 
     def generate(self):
         return str(self.token)

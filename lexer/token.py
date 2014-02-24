@@ -28,7 +28,8 @@ class Type (Word):
         super(Type, self).__init__(lexeme, Tag.BASIC)
         self.width = width
 
-    def max(self, p1, p2):
+    @staticmethod
+    def max(p1, p2):
         if p1 == ReservedWords.Float or p2 == ReservedWords.Float:
             return ReservedWords.Float
         else:

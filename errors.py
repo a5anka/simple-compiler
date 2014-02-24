@@ -19,3 +19,7 @@ class CompilerLexError (Exception):
 
     def __str__(self):
         return ("Syntax error at line " + str(self.line))
+
+class TypeNarrowError (Exception):
+    def __str__(self):
+        return repr("Type narrowing!")

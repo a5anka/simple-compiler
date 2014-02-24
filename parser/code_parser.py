@@ -25,8 +25,8 @@ class CodeParser (object):
         self.L()
 
     def D(self):
-        self.B()
-        self.N()
+        b_type = self.B()
+        self.N(b_type)
         self.match(Tag.END)
         try:
             self.D()
@@ -34,20 +34,29 @@ class CodeParser (object):
             pass
 
     def B(self):
+            token = self.look
             self.match(Tag.BASIC)
+            return token
 
-    def N(self):
+    def N(self, inh):
+        token = self.look
         self.match(Tag.ID)
-        self.N1()
+        node = self.get_leaf(token)
+        node.data_type = inh
+        self.N1(inh)
 
-    def N1(self):
+    def N1(self, inh):
         try:
             self.match(Tag.COMMA)
         except CompilerSyntaxError:
             return
 
+        token = self.look
         self.match(Tag.ID)
-        self.N1()
+        node = self.get_leaf(token)
+        node.data_type = inh
+
+        self.N1(inh)
 
     def L(self):
         node = self.S()
@@ -73,7 +82,7 @@ class CodeParser (object):
 
         self.match(Tag.ASSIGN)
         e_node = self.E()
-        return self.get_node('=', Leaf(token), e_node)
+        return self.get_node('=', self.get_leaf(token), e_node)
 
     def E(self):
         t_node = self.T()
@@ -112,11 +121,11 @@ class CodeParser (object):
             try:
                 token = self.look
                 self.match(Tag.NUM)
-                node = Leaf(token)
+                node = self.get_leaf(token)
             except CompilerSyntaxError:
                 token = self.look
                 self.match(Tag.ID)
-                node = Leaf(token)
+                node = self.get_leaf(token)
             return node
 
         node = self.E()

@@ -3,7 +3,7 @@
 import sys
 
 from lexer.lexer import Lexer
-from errors import EndOfFileError, CompilerSyntaxError, CompilerLexError
+from errors import EndOfFileError, CompilerSyntaxError, CompilerLexError, TypeNarrowError
 from parser.code_parser import CodeParser
 
 def process_arguments():
@@ -31,6 +31,8 @@ def main():
         except CompilerSyntaxError as e:
             print e
         except CompilerLexError as e:
+            print e
+        except TypeNarrowError as e:
             print e
 
 if __name__ == '__main__':
