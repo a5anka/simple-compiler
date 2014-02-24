@@ -63,14 +63,11 @@ class CodeParser (object):
         try:
             self.match(Tag.END)
         except EndOfFileError:
-            pass
+            node.generate()
+            return
 
         node.generate()
-
-        try:
-            self.L()
-        except CompilerSyntaxError:
-            pass
+        self.L()
 
     def S(self):
         token = self.look
