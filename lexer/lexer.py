@@ -103,7 +103,7 @@ class Lexer (object):
                 v = 10 * v + int(self.peek)
                 self.read_char()
 
-            if self.peek != '.': return Num(v)
+            if self.peek != '.': return Num(v, ReservedWords.Int)
 
             d = 10
             while True:
@@ -112,7 +112,7 @@ class Lexer (object):
                 v = v + float(self.peek) / d
                 d = d * 10
 
-            return Num(v)
+            return Num(v, ReservedWords.Float)
 
 
         if self.peek.isalpha():

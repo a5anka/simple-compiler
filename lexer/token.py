@@ -7,9 +7,10 @@ class Token (object):
         self.tag = tag
 
 class Num (Token):
-    def __init__(self, value):
+    def __init__(self, value, t):
         super(Num, self).__init__(Tag.NUM)
         self.value = value
+        self.data_type = t
 
     def __str__(self):
         return str(self.value)

@@ -122,6 +122,7 @@ class CodeParser (object):
                 token = self.look
                 self.match(Tag.NUM)
                 node = self.get_leaf(token)
+                node.data_type = token.data_type
             except CompilerSyntaxError:
                 token = self.look
                 self.match(Tag.ID)
