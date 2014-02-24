@@ -88,8 +88,8 @@ class Lexer (object):
         elif self.peek == "f":
             if self.read_and_check("l"):
                 if (self.read_and_check("o") and
-                    read_and_check("a") and
-                    read_and_check("t")):
+                    self.read_and_check("a") and
+                    self.read_and_check("t")):
                     return self.words["float"]
                 else:
                     raise CompilerSyntaxError(self.line)
@@ -101,13 +101,13 @@ class Lexer (object):
             self.read_char()
             while self.peek.isdigit():
                 v = 10 * v + int(self.peek)
-                read_char()
+                self.read_char()
 
             if self.peek != '.': return Num(v)
 
             d = 10
             while True:
-                read_char()
+                self.read_char()
                 if not self.peek.isdigit(): break
                 v = v + float(self.peek) / d
                 d = d * 10
